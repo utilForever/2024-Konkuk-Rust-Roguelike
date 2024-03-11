@@ -7,40 +7,78 @@
 - Week 0 (3/12)
   - Introduction
 - Week 1 (3/12)
-  - A Tour of Rust
-  - Fundamental Types
-  - Ownership and Moves
-  - References and Borrowing
-  - Expressions
-  - Error Handling
+  - Hello, World
+    - What is Rust?
+    - Benefits of Rust
+    - Playground
+  - Types and Values
+    - Hello, World
+    - Variables
+    - Values
+    - Arithmetic
+    - Type Inference
+  - Control Flow Basics
+    - `if` Expressions
+    - Loops
+    - `break` and `continue`
+    - Blocks and Scopes
+    - Functions
+    - Macros
+  - Tuples and Arrays
+    - Arrays
+    - Tuples
+    - Array Iteration
+    - Patterns and Destructuring
+  - References
+    - Shared References
+    - Exclusive References
+    - Slices: `&[T]`
+    - Strings
+  - User-Defined Types
+    - Named Structs
+    - Tuple Structs
+    - Enums
+    - Static
+    - Const
+    - Type Aliases
   - Assignment #1
 - Week 2 (TBA)
-  - Crates and Modules
-  - Structs
-  - Enums and Patterns
-  - Traits and Generics
-  - Operator Overloading
+  - Pattern Matching
+  - Methods and Traits
+  - Generics
+  - Standard Library Types
+  - Standard Library Traits
   - Assignment #2
 - Week 3 (TBA)
-  - Utility Traits
-  - Closures
-  - Iterators
-  - Collections
+  - Memory Management
+  - Smart Pointers
+  - Borrowing
+  - Lifetimes
   - Assignment #3
 - Week 4 (TBA)
-  - Strings and Text
-  - Input and Output
-  - Concurrency
+  - Iterators
+  - Modules
+  - Testing
+  - Error Handling
+  - Unsafe Rust
   - Assignment #4
 - Week 5 (TBA)
-  - Asynchronous Programming
-  - Macros
+  - Threads
+  - Channels
+  - Send and Async
+  - Shared State
+  - Async Basics
+  - Control Flow
+  - Pitfalls
   - Assignment #5
 - Week 6 (TBA)
-  - Unsafe Code
-  - Foreign Functions
-  - Introduction to WebAssembly
+  - Closures
+  - Macros
   - Assignment #6
+- Week 7 (TBA)
+  - Foreign Function Interface (FFI)
+  - Rust and WebAssembly
+  - Assignment #7
 
 ## References
 
