@@ -6,7 +6,7 @@
 
 - Week 0 (3/12) [[Lecture]](./1%20-%20Lecture/240312%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%200.pdf)
   - Introduction
-- Week 1 (3/26)
+- Week 1 (3/26) [[Assignment]](./3%20-%20Assignment/240326%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%201/)
   - Hello, World
     - What is Rust?
     - Benefits of Rust
