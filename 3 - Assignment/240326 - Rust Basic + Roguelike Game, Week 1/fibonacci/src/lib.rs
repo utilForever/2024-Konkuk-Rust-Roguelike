@@ -1,10 +1,7 @@
 pub fn fib(n: u32) -> u32 {
     return if n <= 2 {
         // The base case
-        if n == 1 || n == 2 {
-            return 1;
-        }
-        0
+        1
     } else {
         // The recursive case
         fib(n - 1) + fib(n - 2)
