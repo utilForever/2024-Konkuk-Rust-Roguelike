@@ -22,7 +22,81 @@ enum Expression {
 }
 
 fn eval(e: Expression) -> Result<i64, String> {
-    todo!()
+    match e {
+        Expression::Value(val) => Ok(val),
+        Expression::Op {
+            op: Operation::Add,
+            left,
+            right,
+        } => {
+            let left_result = eval(*left);
+            let right_result = eval(*right);
+            if let Ok(left_value) = left_result {
+                if let Ok(right_value) = right_result {
+                    Ok(left_value + right_value)
+                } else {
+                    right_result
+                }
+            } else {
+                left_result
+            }
+        }
+        Expression::Op {
+            op: Operation::Sub,
+            left,
+            right,
+        } => {
+            let left_result = eval(*left);
+            let right_result = eval(*right);
+            if let Ok(left_value) = left_result {
+                if let Ok(right_value) = right_result {
+                    Ok(left_value - right_value)
+                } else {
+                    right_result
+                }
+            } else {
+                left_result
+            }
+        }
+        Expression::Op {
+            op: Operation::Mul,
+            left,
+            right,
+        } => {
+            let left_result = eval(*left);
+            let right_result = eval(*right);
+            if let Ok(left_value) = left_result {
+                if let Ok(right_value) = right_result {
+                    Ok(left_value * right_value)
+                } else {
+                    right_result
+                }
+            } else {
+                left_result
+            }
+        }
+        Expression::Op {
+            op: Operation::Div,
+            left,
+            right,
+        } => {
+            let left_result = eval(*left);
+            let right_result = eval(*right);
+            if let Ok(left_value) = left_result {
+                if let Ok(right_value) = right_result {
+                    if right_value == 0 {
+                        Err(String::from("Division by zero"))
+                    } else {
+                        Ok(left_value / right_value)
+                    }
+                } else {
+                    right_result
+                }
+            } else {
+                left_result
+            }
+        }
+    }
 }
 
 #[cfg(test)]
