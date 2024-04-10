@@ -1,14 +1,18 @@
 // Calculate the magnitude of a vector by summing the squares of its coordinates
 // and taking the square root. Use the `sqrt()` method to calculate the square
 // root, like `v.sqrt()`.
-fn magnitude(/* ... */) -> f64 {
-    todo!()
+fn magnitude(vec: &mut [f64; 3]) -> f64 {
+    let sum_of_squares: f64 = vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2];
+    sum_of_squares.sqrt()
 }
 
 // Normalize a vector by calculating its magnitude and dividing all of its
 // coordinates by that magnitude.
-fn normalize(/* ... */) {
-    todo!()
+fn normalize(vec: &mut [f64; 3]) {
+    let mag = magnitude(vec);
+    for i in 0..3 {
+        vec[i] /= mag;
+    }
 }
 
 #[cfg(test)]
