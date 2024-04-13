@@ -6,7 +6,7 @@
 
 - Week 0 (3/12) [[Lecture]](./1%20-%20Lecture/240312%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%200.pdf)
   - Introduction
-- Week 1 (3/26) [[Assignment]](./3%20-%20Assignment/240326%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%201/)
+- Week 1 (3/26) [[Assignment]](./3%20-%20Assignment/240326%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%201/) [[Solution]](./4%20-%20Solution/240326%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%201/)
   - Hello, World
     - What is Rust?
     - Benefits of Rust
@@ -34,6 +34,8 @@
     - Exclusive References
     - Slices: `&[T]`
     - Strings
+  - Assignment #1
+- Week 2 (4/9) [[Assignment]](./3%20-%20Assignment/240409%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%202/)
   - User-Defined Types
     - Named Structs
     - Tuple Structs
@@ -41,13 +43,35 @@
     - Static
     - Const
     - Type Aliases
-  - Assignment #1
-- Week 2 (TBA)
   - Pattern Matching
+    - Matching Values
+    - Destructuring
+    - Let Control Flow
   - Methods and Traits
+    - Methods
+    - Traits
+    - Deriving
   - Generics
+    - Generic Functions
+    - Generic Data Types
+    - Generic Traits
+    - `impl` Trait
   - Standard Library Types
+    - Standard Library
+    - Documentation
+    - `Option`
+    - `Result`
+    - `String`
+    - `Vec`
+    - `HashMap`
   - Standard Library Traits
+    - Comparisons
+    - Operators
+    - `From` and `Into`
+    - Casting
+    - `Read` and `Write`
+    - `Default`, struct update syntax
+    - Closures
   - Assignment #2
 - Week 3 (TBA)
   - Memory Management
