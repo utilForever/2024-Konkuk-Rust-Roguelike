@@ -18,7 +18,20 @@ fn do_things(logger: &impl Logger) {
     logger.log(2, "Uhoh");
 }
 
-// TODO: Define and implement `VerbosityFilter`.
+struct VerbosityFilter {
+    max_verbosity: u8,
+    inner: StderrLogger,
+}
+
+impl Logger for VerbosityFilter {
+    fn log(&self, verbosity: u8, message: impl Display) {
+        if verbosity > self.max_verbosity {
+            return;
+        }
+
+        self.inner.log(verbosity, message);
+    }
+}
 
 #[cfg(test)]
 mod tests {
@@ -26,19 +39,28 @@ mod tests {
 
     #[test]
     fn logger_low() {
-        let log = VerbosityFilter { max_verbosity: 1, inner: StderrLogger };
+        let log = VerbosityFilter {
+            max_verbosity: 1,
+            inner: StderrLogger,
+        };
         do_things(&log);
     }
 
     #[test]
     fn logger_mid() {
-        let log = VerbosityFilter { max_verbosity: 3, inner: StderrLogger };
+        let log = VerbosityFilter {
+            max_verbosity: 3,
+            inner: StderrLogger,
+        };
         do_things(&log);
     }
 
     #[test]
     fn logger_high() {
-        let log = VerbosityFilter { max_verbosity: 6, inner: StderrLogger };
+        let log = VerbosityFilter {
+            max_verbosity: 6,
+            inner: StderrLogger,
+        };
         do_things(&log);
     }
 }
