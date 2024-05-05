@@ -34,19 +34,47 @@ fn eval(e: Expression) -> Result<i64, String> {
             };
 
             match op {
-                Operation::Add => Ok(left + right),
-                Operation::Sub => Ok(left - right),
-                Operation::Mul => Ok(left * right),
-                Operation::Div => {
-                    if right == 0 {
-                        Err(String::from("Division by zero"))
-                    } else {
-                        Ok(left / right)
-                    }
-                }
+                Operation::Add => add(left, right),
+                Operation::Sub => sub(left, right),
+                Operation::Mul => mul(left, right),
+                Operation::Div => div(left, right),
             }
         }
         Expression::Value(v) => Ok(v),
+    }
+}
+
+fn add(left: i64, right: i64) -> Result<i64, String> {
+    if let Some(ret) = left.checked_add(right) {
+        Ok(ret)
+    } else {
+        Err(String::from("Stack Overflow"))
+    }
+}
+
+fn sub(left: i64, right: i64) -> Result<i64, String> {
+    if let Some(ret) = left.checked_sub(right) {
+        Ok(ret)
+    } else {
+        Err(String::from("Stack Overflow"))
+    }
+}
+
+fn mul(left: i64, right: i64) -> Result<i64, String> {
+    if let Some(ret) = left.checked_mul(right) {
+        Ok(ret)
+    } else {
+        Err(String::from("Stack Overflow"))
+    }
+}
+
+fn div(left: i64, right: i64) -> Result<i64, String> {
+    if right == 0 {
+        Err(String::from("Division by zero"))
+    } else if let Some(ret) = left.checked_div(right) {
+        Ok(ret)
+    } else {
+        Err(String::from("Stack Overflow"))
     }
 }
 
@@ -98,7 +126,7 @@ mod tests {
     }
 
     #[test]
-    fn test_error() {
+    fn test_division_by_zero() {
         assert_eq!(
             eval(Expression::Op {
                 op: Operation::Div,
@@ -106,6 +134,18 @@ mod tests {
                 right: Box::new(Expression::Value(0)),
             }),
             Err(String::from("Division by zero"))
+        );
+    }
+
+    #[test]
+    fn test_stack_overflow() {
+        assert_eq!(
+            eval(Expression::Op {
+                op: Operation::Add,
+                left: Box::new(Expression::Value(i64::MAX)),
+                right: Box::new(Expression::Value(10)),
+            }),
+            Err(String::from("Stack Overflow"))
         );
     }
 }
