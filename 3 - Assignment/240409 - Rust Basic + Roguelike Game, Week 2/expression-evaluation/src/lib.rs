@@ -22,7 +22,32 @@ enum Expression {
 }
 
 fn eval(e: Expression) -> Result<i64, String> {
-    todo!()
+    match e {
+        Expression::Op { op, left, right } => {
+            let left = match eval(*left) {
+                Ok(v) => v,
+                Err(_msg) => return Err(String::from("left operand error")),
+            };
+            let right = match eval(*right) {
+                Ok(v) => v,
+                Err(_msg) => return Err(String::from("right operand error")),
+            };
+
+            match op {
+                Operation::Add => Ok(left + right),
+                Operation::Sub => Ok(left - right),
+                Operation::Mul => Ok(left * right),
+                Operation::Div => {
+                    if right == 0 {
+                        Err(String::from("Division by zero"))
+                    } else {
+                        Ok(left / right)
+                    }
+                }
+            }
+        }
+        Expression::Value(v) => Ok(v),
+    }
 }
 
 #[cfg(test)]
