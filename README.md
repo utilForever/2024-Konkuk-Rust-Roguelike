@@ -35,7 +35,7 @@
     - Slices: `&[T]`
     - Strings
   - Assignment #1
-- Week 2 (4/9) [[Assignment]](./3%20-%20Assignment/240409%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%202/)
+- Week 2 (4/9) [[Assignment]](./3%20-%20Assignment/240409%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%202/) [[Solution]](./4%20-%20Solution/240409%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%202/)
   - User-Defined Types
     - Named Structs
     - Tuple Structs
