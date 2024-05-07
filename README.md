@@ -52,7 +52,7 @@
     - Traits
     - Deriving
   - Assignment #2
-- Week 3 (5/7)
+- Week 3 (5/7) [[Assignment]](./3%20-%20Assignment/240507%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%203/)
   - Generics
     - Generic Functions
     - Generic Data Types
