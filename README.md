@@ -52,7 +52,7 @@
     - Traits
     - Deriving
   - Assignment #2
-- Week 3 (5/7) [[Assignment]](./3%20-%20Assignment/240507%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%203/)
+- Week 3 (5/7) [[Assignment]](./3%20-%20Assignment/240507%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%203/) [[Solution]](./4%20-%20Solution/240507%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%203/)
   - Generics
     - Generic Functions
     - Generic Data Types
@@ -75,11 +75,27 @@
     - `Default`, struct update syntax
     - Closures
   - Assignment #3
-- Week 4 (TBA)
+- Week 4 (5/21) [[Assignment]](./3%20-%20Assignment/240521%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%204/)
   - Memory Management
+    - Review of Program Memory
+    - Approaches to Memory Management
+    - Onwership
+    - Move Semantics
+    - Clone
+    - Copy Types
+    - Drop
   - Smart Pointers
+    - Box
+    - Rc
+    - Trait Objects
   - Borrowing
+    - Borrowing a Value
+    - Borrow Checking
+    - Interior Mutability
   - Lifetimes
+    - Lifetime Annotations
+    - Lifetime Elision
+    - Struct Lifetimes
   - Assignment #4
 - Week 5 (TBA)
   - Iterators
