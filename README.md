@@ -75,7 +75,7 @@
     - `Default`, struct update syntax
     - Closures
   - Assignment #3
-- Week 4 (5/21) [[Assignment]](./3%20-%20Assignment/240521%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%204/)
+- Week 4 (5/21) [[Assignment]](./3%20-%20Assignment/240521%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%204/) [[Solution]](./4%20-%20Solution/240521%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%204/)
   - Memory Management
     - Review of Program Memory
     - Approaches to Memory Management
