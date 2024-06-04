@@ -81,12 +81,12 @@
     - Approaches to Memory Management
     - Onwership
     - Move Semantics
-    - Clone
-    - Copy Types
-    - Drop
+    - `Clone`
+    - `Copy` Types
+    - `Drop`
   - Smart Pointers
-    - Box
-    - Rc
+    - `Box`
+    - `Rc`
     - Trait Objects
   - Borrowing
     - Borrowing a Value
@@ -97,30 +97,56 @@
     - Lifetime Elision
     - Struct Lifetimes
   - Assignment #4
-- Week 5 (TBA)
+- Week 5 (6/4)
   - Iterators
+    - `Iterator`
+    - `IntoIterator`
+    - `FromIterator`
   - Modules
+    - Modules
+    - Filesystem Hierarchy
+    - Visibility
+    - `use`, `super`, `self`
   - Testing
+    - Test Modules
+    - Other Types of Tests
+    - Compiler Lints and Clippy
   - Error Handling
+    - Panics
+    - Try Operator
+    - Try Conversions
+    - `Error` Trait
+    - `thiserror` and `anyhow`
   - Unsafe Rust
+    - Unsafe
+    - Dereferencing Raw Pointers
+    - Mutable Static Variables
+    - Unions
+    - Unsafe Functions
+    - Unsafe Traits
   - Assignment #5
 - Week 6 (TBA)
-  - Threads
-  - Channels
-  - Send and Async
-  - Shared State
-  - Async Basics
-  - Control Flow
-  - Pitfalls
+  - Closures
   - Assignment #6
 - Week 7 (TBA)
-  - Closures
   - Macros
   - Assignment #7
 - Week 8 (TBA)
+  - Concurrency, Part 1
+  - Assignment #8
+- Week 9 (6/3)
+  - Concurrency, Part 2
+  - Assignment #9
+- Week 10 (TBA)
+  - Asynchronous Programming, Part 1
+  - Assignment #10
+- Week 11 (TBA)
+  - Asynchronous Programming, Part 2
+  - Assignment #11
+- Week 12 (TBA)
   - Foreign Function Interface (FFI)
   - Rust and WebAssembly
-  - Assignment #8
+  - Assignment #12
 
 ## References
 
