@@ -125,8 +125,20 @@
     - Unsafe Functions
     - Unsafe Traits
   - Assignment #5
-- Week 6 (TBA)
+- Week 6 (6/26)
   - Closures
+    - Capturing Variables
+      - Closures that Borrow
+      - Closures that Steal
+    - Function and Closure Types
+    - Closure Performance
+    - Closures and Safety
+      - Closures that Kill
+      - `FnOnce`
+      - `FnMut`
+      - `Copy` and `Clone` for Closures
+    - Callbacks
+    - Using Closures Effectively
   - Assignment #6
 - Week 7 (TBA)
   - Macros
