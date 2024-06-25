@@ -97,7 +97,7 @@
     - Lifetime Elision
     - Struct Lifetimes
   - Assignment #4
-- Week 5 (6/4) [[Assignment]](./3%20-%20Assignment/240604%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%205/)
+- Week 5 (6/4) [[Assignment]](./3%20-%20Assignment/240604%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%205/) [[Solution]](./4%20-%20Solution/240604%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%205/)
   - Iterators
     - `Iterator`
     - `IntoIterator`
