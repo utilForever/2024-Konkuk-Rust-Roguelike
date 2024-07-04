@@ -1,11 +1,11 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, hash::Hash};
 
 // Counter counts the number of times each value of type T has been seen.
-struct Counter {
-    values: HashMap<u32, u64>,
+struct Counter<T: Hash + Eq> {
+    values: HashMap<T, u64>,
 }
 
-impl Counter {
+impl<T: Hash + Eq> Counter<T> {
     // Create a new Counter.
     fn new() -> Self {
         Counter {
@@ -14,7 +14,7 @@ impl Counter {
     }
 
     // Count an occurrence of the given value.
-    fn count(&mut self, value: u32) {
+    fn count(&mut self, value: T) {
         if self.values.contains_key(&value) {
             *self.values.get_mut(&value).unwrap() += 1;
         } else {
@@ -23,7 +23,7 @@ impl Counter {
     }
 
     // Return the number of times the given value has been seen.
-    fn times_seen(&self, value: u32) -> u64 {
+    fn times_seen(&self, value: T) -> u64 {
         self.values.get(&value).copied().unwrap_or_default()
     }
 }
