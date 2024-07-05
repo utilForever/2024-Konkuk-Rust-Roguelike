@@ -1,11 +1,117 @@
 // Type implementing arbitrary-precision decimal arithmetic
+#[derive(Clone)]
 pub struct Decimal {
-    // implement your type here
+    sign: bool,
+    integer: Vec<u8>,
+    decimal: Vec<u8>,
 }
 
 impl Decimal {
     pub fn try_from(input: &str) -> Option<Decimal> {
-        unimplemented!("Create a new decimal with a value of {}", input)
+        let is_sign: bool;
+        let mut input_iter = input.chars();
+        let first_character = input.chars().next()?;
+        if first_character == '-' {
+            is_sign = true;
+            input_iter.next();
+        } else if first_character == '+' {
+            is_sign = false;
+            input_iter.next();
+        } else if first_character.is_ascii_digit() {
+            is_sign = false;
+        } else {
+            return None;
+        }
+        let mut res = Decimal {
+            sign: is_sign,
+            integer: Vec::new(),
+            decimal: Vec::new(),
+        };
+        let mut is_decimal = false;
+        while let Some(c) = input_iter.next() {
+            if c == '.' {
+                if is_decimal {
+                    return None;
+                }
+                is_decimal = true;
+            } else if c.is_ascii_digit() {
+                if is_decimal {
+                    res.decimal.push(c as u8 - 48);
+                } else {
+                    res.integer.push(c as u8 - 48);
+                }
+            } else {
+                return None;
+            }
+        }
+        if res.integer.len() == 0 {
+            res.integer.push(0);
+        }
+        if res.decimal.len() == 0 {
+            res.decimal.push(0);
+        }
+        return Some(res);
+    }
+
+    pub fn simplify(&self) -> Decimal {
+        let mut res = self.clone();
+        let mut first_nonzero_idx: usize = 0;
+        let mut last_nonzero_idx: usize = res.decimal.len() - 1;
+        while first_nonzero_idx < res.integer.len() - 1 && res.integer[first_nonzero_idx] == 0 {
+            first_nonzero_idx += 1;
+        }
+        while last_nonzero_idx > 0 && res.decimal[last_nonzero_idx] == 0 {
+            last_nonzero_idx -= 1;
+        }
+        res.integer = res.integer[last_nonzero_idx..].to_vec();
+        res.decimal = res.decimal[..=last_nonzero_idx].to_vec();
+        if res.integer.len() == 1
+            && res.integer[0] == 0
+            && res.decimal.len() == 1
+            && res.decimal[0] == 0
+        {
+            res.sign = false;
+        }
+        res
+    }
+}
+
+impl PartialEq for Decimal {
+    fn eq(&self, other: &Decimal) -> bool {
+        let a = self.simplify();
+        let b = other.simplify();
+        if a.sign != b.sign || a.integer != b.integer || a.decimal != b.decimal {
+            return false;
+        }
+        true
+    }
+}
+
+impl PartialOrd for Decimal {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        let a = self.simplify();
+        let b = other.simplify();
+        if a.sign ^ b.sign {
+            if a.sign {
+                return Some(std::cmp::Ordering::Greater);
+            } else {
+                return Some(std::cmp::Ordering::Less);
+            }
+        }
+        if a.integer.len() != b.integer.len() {
+            if a.sign {
+                return Some(a.integer.len().cmp(&b.integer.len()));
+            } else {
+                return Some(b.integer.len().cmp(&a.integer.len()));
+            }
+        }
+        let mut flag = false;
+        let mut a_int = a.integer.clone();
+        let mut b_int = b.integer.clone();
+        let mut a_int_iter = a_int.iter_mut();
+        let mut b_int_iter = b_int.iter_mut();
+        while let Some((na, nb)) = a_int_iter.next().zip(b_int_iter.next()) {}
+        return Some(std::cmp::Ordering::Equal);
     }
 }
 
