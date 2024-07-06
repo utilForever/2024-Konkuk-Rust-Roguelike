@@ -1,6 +1,13 @@
 use std::cmp::Ordering;
 
 // TODO: implement the `min` function.
+fn min<T: Ord>(v1: T, v2: T) -> T {
+    if v1.cmp(&v2) == Ordering::Less {
+        v1
+    } else {
+        v2
+    }
+}
 
 #[cfg(test)]
 mod tests {
