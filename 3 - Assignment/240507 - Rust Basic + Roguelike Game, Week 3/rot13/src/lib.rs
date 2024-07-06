@@ -6,6 +6,23 @@ struct RotDecoder<R: Read> {
 }
 
 // Implement the `Read` trait for `RotDecoder`.
+impl<R: Read> Read for RotDecoder<R> {
+    fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
+        let r_bytes = self.input.read(buf)?;
+        for idx in 0..r_bytes {
+            let c = buf[idx];
+            if !c.is_ascii_alphabetic() {
+                continue;
+            }
+            if c > 97 {
+                buf[idx] = ((c - 97) + self.rot) % 26 + 97;
+            } else {
+                buf[idx] = ((c - 65) + self.rot) % 26 + 65;
+            }
+        }
+        return Result::Ok(r_bytes);
+    }
+}
 
 #[cfg(test)]
 mod tests {
