@@ -1,13 +1,10 @@
-use std::marker::PhantomData;
 #[cfg(test)]
 use std::rc::Rc;
 
 pub struct CircularBuffer<T> {
-    // This field is here to make the template compile and not to
-    // complain about unused type parameter 'T'. Once you start
-    // solving the exercise, delete this field and the 'std::marker::PhantomData'
-    // import.
-    field: PhantomData<T>,
+    buffer: Vec<Option<T>>,
+    start_idx: usize,
+    end_idx: usize,
 }
 
 #[derive(Debug, PartialEq)]
@@ -18,29 +15,52 @@ pub enum Error {
 
 impl<T> CircularBuffer<T> {
     pub fn new(capacity: usize) -> Self {
-        unimplemented!(
-            "Construct a new CircularBuffer with the capacity to hold {}.",
-            match capacity {
-                1 => "1 element".to_string(),
-                _ => format!("{} elements", capacity),
-            }
-        );
+        let mut buf = Vec::with_capacity(capacity);
+        for _ in 0..capacity {
+            buf.push(None);
+        }
+        Self {
+            buffer: buf,
+            start_idx: 0,
+            end_idx: 0,
+        }
     }
 
     pub fn write(&mut self, _element: T) -> Result<(), Error> {
-        unimplemented!("Write the passed element to the CircularBuffer or return FullBuffer error if CircularBuffer is full.");
+        if self.start_idx == self.end_idx && self.buffer[self.start_idx].is_some() {
+            Err(Error::FullBuffer)
+        } else {
+            let capacity = self.buffer.capacity();
+            self.buffer[self.end_idx] = Some(_element);
+            self.end_idx = (self.end_idx + 1) % capacity;
+            Ok(())
+        }
     }
 
     pub fn read(&mut self) -> Result<T, Error> {
-        unimplemented!("Read the oldest element from the CircularBuffer or return EmptyBuffer error if CircularBuffer is empty.");
+        if self.start_idx == self.end_idx && self.buffer[self.start_idx].is_none() {
+            Err(Error::EmptyBuffer)
+        } else {
+            let capacity = self.buffer.capacity();
+            let value = std::mem::replace(&mut self.buffer[self.start_idx], None);
+            self.start_idx = (self.start_idx + 1) % capacity;
+            Ok(value.unwrap())
+        }
     }
 
     pub fn clear(&mut self) {
-        unimplemented!("Clear the CircularBuffer.");
+        for idx in 0..self.buffer.capacity() {
+            self.buffer[idx] = None;
+        }
     }
 
     pub fn overwrite(&mut self, _element: T) {
-        unimplemented!("Write the passed element to the CircularBuffer, overwriting the existing elements if CircularBuffer is full.");
+        let capacity = self.buffer.capacity();
+        self.buffer[self.end_idx] = Some(_element);
+        if self.start_idx == self.end_idx {
+            self.start_idx = (self.start_idx + 1) % capacity;
+        }
+        self.end_idx = (self.end_idx + 1) % capacity;
     }
 }
 
