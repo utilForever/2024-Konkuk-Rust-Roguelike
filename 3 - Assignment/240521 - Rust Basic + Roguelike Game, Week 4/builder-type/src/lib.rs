@@ -25,7 +25,10 @@ impl Package {
     // Return a representation of this package as a dependency, for use in
     // building other packages.
     fn as_dependency(&self) -> Dependency {
-        todo!("1")
+        Dependency {
+            name: self.name.clone(),
+            version_expression: self.version.clone(),
+        }
     }
 }
 
@@ -34,7 +37,13 @@ struct PackageBuilder(Package);
 
 impl PackageBuilder {
     fn new(name: impl Into<String>) -> Self {
-        todo!("2")
+        PackageBuilder(Package {
+            name: name.into(),
+            version: "".to_string(),
+            authors: vec![],
+            dependencies: vec![],
+            language: None,
+        })
     }
 
     // Set the package version.
@@ -45,17 +54,20 @@ impl PackageBuilder {
 
     // Set the package authors.
     fn authors(mut self, authors: Vec<String>) -> Self {
-        todo!("3")
+        self.0.authors = authors;
+        self
     }
 
     // Add an additional dependency.
     fn dependency(mut self, dependency: Dependency) -> Self {
-        todo!("4")
+        self.0.dependencies.push(dependency);
+        self
     }
 
     // Set the language. If not set, language defaults to None.
     fn language(mut self, language: Language) -> Self {
-        todo!("5")
+        self.0.language = Some(language);
+        self
     }
 
     fn build(self) -> Package {
