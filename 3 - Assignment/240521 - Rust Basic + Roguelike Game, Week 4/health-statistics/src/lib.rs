@@ -33,7 +33,24 @@ impl User {
     }
 
     pub fn visit_doctor(&mut self, measurements: Measurements) -> HealthReport {
-        todo!("Update a user's statistics based on measurements from a visit to the doctor")
+        self.visit_count += 1;
+        let report = HealthReport {
+            patient_name: &self.name,
+            visit_count: self.visit_count as u32,
+            height_change: measurements.height - self.height,
+            blood_pressure_change: if self.last_blood_pressure.is_none() {
+                None
+            } else {
+                let last_blood_pressure = self.last_blood_pressure.unwrap();
+                Some((
+                    measurements.blood_pressure.0 as i32 - last_blood_pressure.0 as i32,
+                    measurements.blood_pressure.1 as i32 - last_blood_pressure.1 as i32,
+                ))
+            },
+        };
+        self.height = measurements.height;
+        self.last_blood_pressure = Some(measurements.blood_pressure);
+        report
     }
 }
 
