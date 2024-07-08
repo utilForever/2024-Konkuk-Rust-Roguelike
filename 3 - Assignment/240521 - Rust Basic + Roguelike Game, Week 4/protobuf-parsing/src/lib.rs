@@ -127,10 +127,39 @@ fn parse_field(data: &[u8]) -> Result<(Field, &[u8]), Error> {
     let (tag, remainder) = parse_varint(data)?;
     let (field_num, wire_type) = unpack_tag(tag)?;
     let (fieldvalue, remainder) = match wire_type {
-        _ => todo!("Based on the wire type, build a Field, consuming as many bytes as necessary."),
+        WireType::Varint => {
+            let (value, remainder) = parse_varint(remainder)?;
+            (FieldValue::Varint(value), remainder)
+        }
+        WireType::Len => {
+            let (value, remainder) = parse_varint(remainder)?;
+            let length: usize = value.try_into()?;
+
+            if length > remainder.len() {
+                return Err(Error::UnexpectedEOF);
+            }
+            let (value, remainder) = remainder.split_at(length);
+            (FieldValue::Len(value), remainder)
+        }
+        WireType::I32 => {
+            if remainder.len() < 4 {
+                return Err(Error::UnexpectedEOF);
+            }
+            let (value, remainder) = remainder.split_at(4);
+            (
+                FieldValue::I32(i32::from_le_bytes(value.try_into().unwrap())),
+                remainder,
+            )
+        }
     };
 
-    todo!("Return the field, and any un-consumed bytes.")
+    Ok((
+        Field {
+            field_num: field_num,
+            value: fieldvalue,
+        },
+        remainder,
+    ))
 }
 
 // Parse a message in the given data, calling `T::add_field` for each field in
@@ -163,6 +192,42 @@ struct Person<'a> {
 }
 
 // TODO: Implement ProtoMessage for Person and PhoneNumber.
+impl<'a> ProtoMessage<'a> for PhoneNumber<'a> {
+    fn add_field(&mut self, field: Field<'a>) -> Result<(), Error> {
+        match field.field_num {
+            1 => {
+                self.number = field.value.as_string()?;
+            }
+            2 => {
+                self.type_ = field.value.as_string()?;
+            }
+            _ => {
+                return Err(Error::InvalidVarint);
+            }
+        }
+        Ok(())
+    }
+}
+
+impl<'a> ProtoMessage<'a> for Person<'a> {
+    fn add_field(&mut self, field: Field<'a>) -> Result<(), Error> {
+        match field.field_num {
+            1 => {
+                self.name = field.value.as_string()?;
+            }
+            2 => {
+                self.id = field.value.as_u64()?;
+            }
+            3 => {
+                self.phone.push(parse_message(field.value.as_bytes()?)?);
+            }
+            _ => {
+                return Err(Error::InvalidVarint);
+            }
+        }
+        Ok(())
+    }
+}
 
 #[cfg(test)]
 mod test {
