@@ -1,11 +1,347 @@
-use std::collections::HashSet;
+use std::{cmp::Ordering, collections::HashSet};
+
+#[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Copy, Debug)]
+enum CardSuit {
+    CLOVER,
+    HEART,
+    DIAMOND,
+    SPADE,
+    None,
+}
+
+impl From<&str> for CardSuit {
+    fn from(value: &str) -> Self {
+        match value {
+            "C" => CardSuit::CLOVER,
+            "H" => CardSuit::HEART,
+            "D" => CardSuit::DIAMOND,
+            "S" => CardSuit::SPADE,
+            _ => CardSuit::None,
+        }
+    }
+}
+
+#[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Copy, Hash, Debug)]
+enum CardRank {
+    TWO,
+    THREE,
+    FOUR,
+    FIVE,
+    SIX,
+    SEVEN,
+    EIGHT,
+    NINE,
+    TEN,
+    JACK,
+    QUEEN,
+    KING,
+    ACE,
+    None,
+}
+
+impl From<&str> for CardRank {
+    fn from(value: &str) -> Self {
+        match value {
+            "2" => CardRank::TWO,
+            "3" => CardRank::THREE,
+            "4" => CardRank::FOUR,
+            "5" => CardRank::FIVE,
+            "6" => CardRank::SIX,
+            "7" => CardRank::SEVEN,
+            "8" => CardRank::EIGHT,
+            "9" => CardRank::NINE,
+            "10" => CardRank::TEN,
+            "J" => CardRank::JACK,
+            "Q" => CardRank::QUEEN,
+            "K" => CardRank::KING,
+            "A" => CardRank::ACE,
+            _ => CardRank::None,
+        }
+    }
+}
+
+#[derive(PartialEq, Eq, Clone, Copy, Debug)]
+struct Card {
+    suit: CardSuit,
+    rank: CardRank,
+}
+
+impl Card {
+    fn new(s: &str) -> Card {
+        let mut s_iter = s.chars();
+        let suit: &str = &s_iter.next_back().unwrap().to_string();
+        let rank: &str = s_iter.as_str();
+        Card {
+            suit: CardSuit::from(suit),
+            rank: CardRank::from(rank),
+        }
+    }
+}
+
+impl PartialOrd for Card {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        match self.rank.partial_cmp(&other.rank).unwrap() {
+            Ordering::Greater => Some(Ordering::Greater),
+            Ordering::Less => Some(Ordering::Less),
+            Ordering::Equal => Some(self.suit.cmp(&other.suit)),
+        }
+    }
+}
+
+#[derive(PartialEq, Eq)]
+enum HandRanking {
+    HighCard([CardRank; 5]),
+    OnePair([CardRank; 4]),
+    TwoPair([CardRank; 3]),
+    ThreeOfAKind([CardRank; 3]),
+    Straight(CardRank),
+    Flush([CardRank; 5]),
+    FullHouse([CardRank; 2]),
+    FourOfAKind([CardRank; 2]),
+    StraightFlush(CardRank),
+}
+
+impl HandRanking {
+    fn rank(&self) -> i32 {
+        match *self {
+            HandRanking::HighCard(_) => 0,
+            HandRanking::OnePair(_) => 1,
+            HandRanking::TwoPair(_) => 2,
+            HandRanking::ThreeOfAKind(_) => 3,
+            HandRanking::Straight(_) => 4,
+            HandRanking::Flush(_) => 5,
+            HandRanking::FullHouse(_) => 6,
+            HandRanking::FourOfAKind(_) => 7,
+            HandRanking::StraightFlush(_) => 8,
+        }
+    }
+}
+
+fn cmp_ranks<const N: usize>(&a: &[CardRank; N], &b: &[CardRank; N]) -> Ordering {
+    for idx in 0..N {
+        match a[idx].partial_cmp(&b[idx]).unwrap() {
+            Ordering::Greater => {
+                return Ordering::Greater;
+            }
+            Ordering::Less => {
+                return Ordering::Less;
+            }
+            Ordering::Equal => (),
+        };
+    }
+    Ordering::Equal
+}
+
+impl PartialOrd for HandRanking {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        match (self, other) {
+            (&HandRanking::HighCard(self_numbers), &HandRanking::HighCard(other_numbers)) => {
+                Some(cmp_ranks(&self_numbers, &other_numbers))
+            }
+            (&HandRanking::OnePair(self_numbers), &HandRanking::OnePair(other_numbers)) => {
+                Some(cmp_ranks(&self_numbers, &other_numbers))
+            }
+            (&HandRanking::TwoPair(self_numbers), &HandRanking::TwoPair(other_numbers)) => {
+                Some(cmp_ranks(&self_numbers, &other_numbers))
+            }
+            (
+                &HandRanking::ThreeOfAKind(self_numbers),
+                &HandRanking::ThreeOfAKind(other_numbers),
+            ) => Some(cmp_ranks(&self_numbers, &other_numbers)),
+            (&HandRanking::Straight(self_number), &HandRanking::Straight(other_number)) => {
+                self_number.partial_cmp(&other_number)
+            }
+            (&HandRanking::Flush(self_numbers), &HandRanking::Flush(other_numbers)) => {
+                Some(cmp_ranks(&self_numbers, &other_numbers))
+            }
+            (&HandRanking::FullHouse(self_numbers), &HandRanking::FullHouse(other_numbers)) => {
+                Some(cmp_ranks(&self_numbers, &other_numbers))
+            }
+            (&HandRanking::FourOfAKind(self_numbers), &HandRanking::FourOfAKind(other_numbers)) => {
+                Some(cmp_ranks(&self_numbers, &other_numbers))
+            }
+            (
+                &HandRanking::StraightFlush(self_number),
+                &HandRanking::StraightFlush(other_number),
+            ) => self_number.partial_cmp(&other_number),
+            _ => Some(self.rank().cmp(&other.rank())),
+        }
+    }
+}
+
+#[derive(Debug)]
+struct Hand<'a> {
+    orig: &'a str,
+    cards: [Card; 5],
+}
+
+impl<'a> Hand<'a> {
+    fn new(cards: &'a str) -> Hand {
+        let card_collection: Vec<Card> = cards
+            .split_ascii_whitespace()
+            .map(|s| Card::new(s))
+            .take(5)
+            .collect();
+        Hand {
+            orig: cards,
+            cards: card_collection.try_into().unwrap(),
+        }
+    }
+
+    fn get_hand_rank(&self) -> HandRanking {
+        let mut single_counted_set: HashSet<CardRank> = HashSet::new();
+        let mut double_counted_set: HashSet<CardRank> = HashSet::new();
+        let mut triple_counted_set: HashSet<CardRank> = HashSet::new();
+        let mut quadra_counted_set: HashSet<CardRank> = HashSet::new();
+        let mut suit_count = vec![0, 0, 0, 0];
+        let mut rank_vec: Vec<CardRank> = Vec::new();
+        for card in &self.cards {
+            suit_count[card.suit as usize] += 1;
+            rank_vec.push(card.rank);
+            if triple_counted_set.take(&card.rank).is_some() {
+                quadra_counted_set.insert(card.rank);
+            } else if double_counted_set.take(&card.rank).is_some() {
+                triple_counted_set.insert(card.rank);
+            } else if single_counted_set.take(&card.rank).is_some() {
+                double_counted_set.insert(card.rank);
+            } else {
+                single_counted_set.insert(card.rank);
+            }
+        }
+        let mut single_counted_vec: Vec<CardRank> = Vec::from_iter(single_counted_set);
+        single_counted_vec.sort();
+        if suit_count.iter().position(|&v| v == 5).is_some() {
+            match single_counted_vec[..] {
+                [CardRank::TEN, CardRank::JACK, CardRank::QUEEN, CardRank::KING, CardRank::ACE] => {
+                    HandRanking::StraightFlush(CardRank::ACE)
+                }
+                [CardRank::NINE, CardRank::TEN, CardRank::JACK, CardRank::QUEEN, CardRank::KING] => {
+                    HandRanking::StraightFlush(CardRank::KING)
+                }
+                [CardRank::EIGHT, CardRank::NINE, CardRank::TEN, CardRank::JACK, CardRank::QUEEN] => {
+                    HandRanking::StraightFlush(CardRank::QUEEN)
+                }
+                [CardRank::SEVEN, CardRank::EIGHT, CardRank::NINE, CardRank::TEN, CardRank::JACK] => {
+                    HandRanking::StraightFlush(CardRank::JACK)
+                }
+                [CardRank::SIX, CardRank::SEVEN, CardRank::EIGHT, CardRank::NINE, CardRank::TEN] => {
+                    HandRanking::StraightFlush(CardRank::TEN)
+                }
+                [CardRank::FIVE, CardRank::SIX, CardRank::SEVEN, CardRank::EIGHT, CardRank::NINE] => {
+                    HandRanking::StraightFlush(CardRank::NINE)
+                }
+                [CardRank::FOUR, CardRank::FIVE, CardRank::SIX, CardRank::SEVEN, CardRank::EIGHT] => {
+                    HandRanking::StraightFlush(CardRank::EIGHT)
+                }
+                [CardRank::THREE, CardRank::FOUR, CardRank::FIVE, CardRank::SIX, CardRank::SEVEN] => {
+                    HandRanking::StraightFlush(CardRank::SEVEN)
+                }
+                [CardRank::TWO, CardRank::THREE, CardRank::FOUR, CardRank::FIVE, CardRank::SIX] => {
+                    HandRanking::StraightFlush(CardRank::SIX)
+                }
+                [CardRank::TWO, CardRank::THREE, CardRank::FOUR, CardRank::FIVE, CardRank::ACE] => {
+                    HandRanking::StraightFlush(CardRank::FIVE)
+                }
+                _ => {
+                    single_counted_vec.reverse();
+                    HandRanking::Flush(single_counted_vec[..].try_into().unwrap())
+                }
+            }
+        } else if !quadra_counted_set.is_empty() {
+            HandRanking::FourOfAKind([
+                *quadra_counted_set.iter().next().unwrap(),
+                single_counted_vec[0],
+            ])
+        } else if !triple_counted_set.is_empty() {
+            let triple_number: CardRank = *triple_counted_set.iter().next().unwrap();
+            if !double_counted_set.is_empty() {
+                HandRanking::FullHouse([triple_number, *double_counted_set.iter().next().unwrap()])
+            } else {
+                HandRanking::ThreeOfAKind([
+                    triple_number,
+                    single_counted_vec[1],
+                    single_counted_vec[0],
+                ])
+            }
+        } else if !double_counted_set.is_empty() {
+            if double_counted_set.len() == 2 {
+                let mut paired_vec: Vec<CardRank> = Vec::from_iter(double_counted_set);
+                paired_vec.sort();
+                HandRanking::TwoPair([paired_vec[1], paired_vec[0], single_counted_vec[0]])
+            } else {
+                single_counted_vec.push(*double_counted_set.iter().next().unwrap());
+                single_counted_vec.reverse();
+                HandRanking::OnePair(single_counted_vec[..].try_into().unwrap())
+            }
+        } else {
+            match single_counted_vec[..] {
+                [CardRank::TEN, CardRank::JACK, CardRank::QUEEN, CardRank::KING, CardRank::ACE] => {
+                    HandRanking::Straight(CardRank::ACE)
+                }
+                [CardRank::NINE, CardRank::TEN, CardRank::JACK, CardRank::QUEEN, CardRank::KING] => {
+                    HandRanking::Straight(CardRank::KING)
+                }
+                [CardRank::EIGHT, CardRank::NINE, CardRank::TEN, CardRank::JACK, CardRank::QUEEN] => {
+                    HandRanking::Straight(CardRank::QUEEN)
+                }
+                [CardRank::SEVEN, CardRank::EIGHT, CardRank::NINE, CardRank::TEN, CardRank::JACK] => {
+                    HandRanking::Straight(CardRank::JACK)
+                }
+                [CardRank::SIX, CardRank::SEVEN, CardRank::EIGHT, CardRank::NINE, CardRank::TEN] => {
+                    HandRanking::Straight(CardRank::TEN)
+                }
+                [CardRank::FIVE, CardRank::SIX, CardRank::SEVEN, CardRank::EIGHT, CardRank::NINE] => {
+                    HandRanking::Straight(CardRank::NINE)
+                }
+                [CardRank::FOUR, CardRank::FIVE, CardRank::SIX, CardRank::SEVEN, CardRank::EIGHT] => {
+                    HandRanking::Straight(CardRank::EIGHT)
+                }
+                [CardRank::THREE, CardRank::FOUR, CardRank::FIVE, CardRank::SIX, CardRank::SEVEN] => {
+                    HandRanking::Straight(CardRank::SEVEN)
+                }
+                [CardRank::TWO, CardRank::THREE, CardRank::FOUR, CardRank::FIVE, CardRank::SIX] => {
+                    HandRanking::Straight(CardRank::SIX)
+                }
+                [CardRank::TWO, CardRank::THREE, CardRank::FOUR, CardRank::FIVE, CardRank::ACE] => {
+                    HandRanking::Straight(CardRank::FIVE)
+                }
+                _ => {
+                    rank_vec.sort();
+                    rank_vec.reverse();
+                    HandRanking::HighCard(rank_vec[..].try_into().unwrap())
+                }
+            }
+        }
+    }
+}
+
+impl<'a> PartialEq for Hand<'a> {
+    fn eq(&self, other: &Self) -> bool {
+        self.get_hand_rank() == other.get_hand_rank()
+    }
+}
+
+impl<'a> PartialOrd for Hand<'a> {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        self.get_hand_rank().partial_cmp(&other.get_hand_rank())
+    }
+}
 
 // Given a list of poker hands, return a list of those hands which win.
 //
 // Note the type signature: this function should return _the same_ reference to
 // the winning hand(s) as were passed in, not reconstructed strings which happen to be equal.
 pub fn winning_hands<'a>(hands: &[&'a str]) -> Vec<&'a str> {
-    unimplemented!("Out of {:?}, which hand wins?", hands)
+    let mut hands_vec: Vec<Hand> = hands.into_iter().map(|&s| Hand::new(s)).collect();
+    hands_vec.sort_by(|a, b| a.partial_cmp(b).unwrap_or(Ordering::Equal));
+    let highest_hand_rank = hands_vec.last().unwrap().get_hand_rank();
+    let mut ret_vec: Vec<&'a str> = Vec::new();
+    for idx in 0..hands_vec.len() {
+        if hands_vec[idx].get_hand_rank() == highest_hand_rank {
+            ret_vec.push(&hands_vec[idx].orig);
+        }
+    }
+    ret_vec
 }
 
 fn hs_from<'a>(input: &[&'a str]) -> HashSet<&'a str> {
