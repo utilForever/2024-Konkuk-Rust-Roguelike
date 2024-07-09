@@ -6,7 +6,6 @@ enum CardSuit {
     HEART,
     DIAMOND,
     SPADE,
-    None,
 }
 
 impl From<&str> for CardSuit {
@@ -16,7 +15,7 @@ impl From<&str> for CardSuit {
             "H" => CardSuit::HEART,
             "D" => CardSuit::DIAMOND,
             "S" => CardSuit::SPADE,
-            _ => CardSuit::None,
+            _ => panic!("Invalid suit value."),
         }
     }
 }
@@ -36,7 +35,6 @@ enum CardRank {
     QUEEN,
     KING,
     ACE,
-    None,
 }
 
 impl From<&str> for CardRank {
@@ -55,7 +53,7 @@ impl From<&str> for CardRank {
             "Q" => CardRank::QUEEN,
             "K" => CardRank::KING,
             "A" => CardRank::ACE,
-            _ => CardRank::None,
+            _ => panic!("Invalid rank value."),
         }
     }
 }
