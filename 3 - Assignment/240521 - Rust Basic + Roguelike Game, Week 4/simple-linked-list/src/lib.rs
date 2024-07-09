@@ -1,14 +1,16 @@
 use std::iter::FromIterator;
 
 pub struct SimpleLinkedList<T> {
-    // Delete this field
-    // dummy is needed to avoid unused parameter error during compilation
-    dummy: ::std::marker::PhantomData<T>,
+    value: Option<T>,
+    next: Option<Box<SimpleLinkedList<T>>>,
 }
 
 impl<T> SimpleLinkedList<T> {
     pub fn new() -> Self {
-        unimplemented!()
+        Self {
+            value: None,
+            next: None,
+        }
     }
 
     // You may be wondering why it's necessary to have is_empty()
@@ -17,34 +19,80 @@ impl<T> SimpleLinkedList<T> {
     // whereas is_empty() is almost always cheap.
     // (Also ask yourself whether len() is expensive for SimpleLinkedList)
     pub fn is_empty(&self) -> bool {
-        unimplemented!()
+        self.value.is_none()
     }
 
     pub fn len(&self) -> usize {
-        unimplemented!()
+        if self.value.is_none() {
+            0
+        } else {
+            1 + if let Some(node) = &self.next {
+                node.len()
+            } else {
+                0
+            }
+        }
     }
 
     pub fn push(&mut self, _element: T) {
-        unimplemented!()
+        // if self.value.is_none() {
+        //     self.value = Some(_element);
+        // } else if let Some(node) = &mut self.next {
+        //     node.push(_element);
+        // } else {
+        //     self.next = Some(Box::new(SimpleLinkedList {
+        //         value: Some(_element),
+        //         next: None,
+        //     }));
+        // }
+        if self.value.is_none() {
+            self.value = Some(_element);
+        } else {
+            let mut new_node = SimpleLinkedList {
+                value: Some(_element),
+                next: None,
+            };
+            std::mem::swap(&mut new_node, self);
+            self.next = Some(Box::new(new_node));
+        }
     }
 
     pub fn pop(&mut self) -> Option<T> {
-        unimplemented!()
+        let ret = std::mem::replace(&mut self.value, None);
+        if self.next.is_some() {
+            let node = std::mem::replace(&mut self.next, None).unwrap();
+            *self = *node;
+        }
+        ret
     }
 
     pub fn peek(&self) -> Option<&T> {
-        unimplemented!()
+        self.value.as_ref()
     }
 
     #[must_use]
     pub fn rev(self) -> SimpleLinkedList<T> {
-        unimplemented!()
+        let mut res = Self::new();
+        let mut node = self;
+        while node.next.is_some() {
+            res.push(node.value.unwrap());
+            node = *node.next.unwrap();
+        }
+        if node.value.is_some() {
+            res.push(node.value.unwrap());
+        }
+        res
     }
 }
 
 impl<T> FromIterator<T> for SimpleLinkedList<T> {
     fn from_iter<I: IntoIterator<Item = T>>(_iter: I) -> Self {
-        unimplemented!()
+        let mut list = Self::new();
+        let mut input_iter = _iter.into_iter();
+        while let Some(v) = input_iter.next() {
+            list.push(v);
+        }
+        list
     }
 }
 
@@ -60,7 +108,12 @@ impl<T> FromIterator<T> for SimpleLinkedList<T> {
 // demands more of the student than we expect at this point in the track.
 impl<T> From<SimpleLinkedList<T>> for Vec<T> {
     fn from(mut _linked_list: SimpleLinkedList<T>) -> Vec<T> {
-        unimplemented!()
+        let mut vector = Vec::new();
+        while let Some(v) = _linked_list.pop() {
+            vector.push(v);
+        }
+        vector.reverse();
+        vector
     }
 }
 
