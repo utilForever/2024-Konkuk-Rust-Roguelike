@@ -1,9 +1,11 @@
 pub fn luhn(cc_number: &str) -> bool {
     let mut sum = 0;
     let mut double = false;
+    let mut number_count = 0;
 
     for c in cc_number.chars().rev() {
         if let Some(digit) = c.to_digit(10) {
+            number_count += 1;
             if double {
                 let double_digit = digit * 2;
                 sum += if double_digit > 9 {
@@ -16,12 +18,18 @@ pub fn luhn(cc_number: &str) -> bool {
             }
 
             double = !double;
-        } else {
+        } else if c == ' ' {
             continue;
+        } else {
+            return false;
         }
     }
 
-    sum % 10 == 0
+    if number_count < 2 {
+        false
+    } else {
+        sum % 10 == 0
+    }
 }
 
 #[cfg(test)]
