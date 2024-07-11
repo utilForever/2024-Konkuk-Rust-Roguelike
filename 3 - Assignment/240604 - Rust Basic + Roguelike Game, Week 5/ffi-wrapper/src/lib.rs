@@ -1,6 +1,3 @@
-// TODO: remove this when you're done with your implementation.
-#![allow(unused_imports, unused_variables, dead_code)]
-
 mod ffi {
     use std::os::raw::{c_char, c_int};
     #[cfg(not(target_os = "macos"))]
@@ -68,24 +65,36 @@ struct DirectoryIterator {
 
 impl DirectoryIterator {
     fn new(path: &str) -> Result<DirectoryIterator, String> {
-        // Call opendir and return a Ok value if that worked,
-        // otherwise return Err with a message.
-        unimplemented!()
+        let path_cstr = CString::new(path.as_bytes()).unwrap();
+        let dir = unsafe { ffi::opendir(path.as_ptr() as *const i8) };
+        if dir.is_null() {
+            Err("No such directory".to_string())
+        } else {
+            Ok(DirectoryIterator {
+                path: path_cstr,
+                dir,
+            })
+        }
     }
 }
 
 impl Iterator for DirectoryIterator {
     type Item = OsString;
     fn next(&mut self) -> Option<OsString> {
-        // Keep calling readdir until we get a NULL pointer back.
-        unimplemented!()
+        let dirent = unsafe { ffi::readdir(self.dir) };
+        if dirent.is_null() {
+            None
+        } else {
+            let filename = unsafe { &*(&(*dirent).d_name as *const [i8; 256] as *const [u8; 256]) };
+            let end_point: usize = filename.iter().position(|&x| x == 0).unwrap_or(256);
+            Some(OsStr::from_bytes(&filename[..end_point]).to_os_string())
+        }
     }
 }
 
 impl Drop for DirectoryIterator {
     fn drop(&mut self) {
-        // Call closedir as needed.
-        unimplemented!()
+        unsafe { ffi::closedir(self.dir) };
     }
 }
 
@@ -103,9 +112,8 @@ mod tests {
     #[test]
     fn test_empty_directory() -> Result<(), Box<dyn Error>> {
         let tmp = tempfile::TempDir::new()?;
-        let iter = DirectoryIterator::new(
-            tmp.path().to_str().ok_or("Non UTF-8 character in path")?,
-        )?;
+        let iter =
+            DirectoryIterator::new(tmp.path().to_str().ok_or("Non UTF-8 character in path")?)?;
         let mut entries = iter.collect::<Vec<_>>();
 
         entries.sort();
@@ -122,13 +130,12 @@ mod tests {
         std::fs::write(tmp.path().join("bar.png"), "<PNG>\n")?;
         std::fs::write(tmp.path().join("crab.rs"), "//! Crab\n")?;
 
-        let iter = DirectoryIterator::new(
-            tmp.path().to_str().ok_or("Non UTF-8 character in path")?,
-        )?;
+        let iter =
+            DirectoryIterator::new(tmp.path().to_str().ok_or("Non UTF-8 character in path")?)?;
         let mut entries = iter.collect::<Vec<_>>();
 
         entries.sort();
-        
+
         assert_eq!(entries, &[".", "..", "bar.png", "crab.rs", "foo.txt"]);
 
         Ok(())
