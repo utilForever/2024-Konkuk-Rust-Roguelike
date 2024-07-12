@@ -1,7 +1,7 @@
 use std::marker::PhantomData;
 use std::ptr;
 
-pub mod linked_list;
+mod linked_list;
 
 struct Node<T> {
     prev: Option<*mut Node<T>>,
@@ -25,7 +25,7 @@ pub struct Iter<'a, T> {
     phantom: PhantomData<&'a T>,
 }
 
-impl<'a, T> LinkedList<T> {
+impl<T> LinkedList<T> {
     pub fn new() -> Self {
         LinkedList {
             front_p: None,
@@ -48,7 +48,7 @@ impl<'a, T> LinkedList<T> {
     }
 
     /// Return a cursor positioned on the front element
-    pub fn cursor_front(&'a mut self) -> Cursor<'a, T> {
+    pub fn cursor_front<'a>(&'a mut self) -> Cursor<'a, T> {
         let ptr = self.front_p;
         Cursor {
             list: self,
@@ -57,7 +57,7 @@ impl<'a, T> LinkedList<T> {
     }
 
     /// Return a cursor positioned on the back element
-    pub fn cursor_back(&'a mut self) -> Cursor<'_, T> {
+    pub fn cursor_back<'a>(&'a mut self) -> Cursor<'_, T> {
         let ptr = self.back_p;
         Cursor {
             list: self,
