@@ -157,7 +157,7 @@
     - Avoiding Syntax Errors During Matching
     - Beyond macro_rules!
   - Assignment #7
-- Week 8 (7/19)
+- Week 8 (7/19) [[Lecture]](./1%20-%20Lecture/240719%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%208.pdf)
   - Concurrency, Part 1
     - Fork-Join Parallelism
       - `spawn` and `join`
