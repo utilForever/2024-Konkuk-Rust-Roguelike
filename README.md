@@ -75,18 +75,18 @@
     - `Default`, struct update syntax
     - Closures
   - Assignment #3
-- Week 4 (5/21) [[Assignment]](./3%20-%20Assignment/240521%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%204/)
+- Week 4 (5/21) [[Assignment]](./3%20-%20Assignment/240521%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%204/) [[Solution]](./4%20-%20Solution/240521%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%204/)
   - Memory Management
     - Review of Program Memory
     - Approaches to Memory Management
     - Onwership
     - Move Semantics
-    - Clone
-    - Copy Types
-    - Drop
+    - `Clone`
+    - `Copy` Types
+    - `Drop`
   - Smart Pointers
-    - Box
-    - Rc
+    - `Box`
+    - `Rc`
     - Trait Objects
   - Borrowing
     - Borrowing a Value
@@ -97,30 +97,95 @@
     - Lifetime Elision
     - Struct Lifetimes
   - Assignment #4
-- Week 5 (TBA)
+- Week 5 (6/4) [[Assignment]](./3%20-%20Assignment/240604%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%205/) [[Solution]](./4%20-%20Solution/240604%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%205/)
   - Iterators
+    - `Iterator`
+    - `IntoIterator`
+    - `FromIterator`
   - Modules
+    - Modules
+    - Filesystem Hierarchy
+    - Visibility
+    - `use`, `super`, `self`
   - Testing
+    - Test Modules
+    - Other Types of Tests
+    - Compiler Lints and Clippy
   - Error Handling
+    - Panics
+    - Try Operator
+    - Try Conversions
+    - `Error` Trait
+    - `thiserror` and `anyhow`
   - Unsafe Rust
+    - Unsafe
+    - Dereferencing Raw Pointers
+    - Mutable Static Variables
+    - Unions
+    - Unsafe Functions
+    - Unsafe Traits
   - Assignment #5
-- Week 6 (TBA)
-  - Threads
-  - Channels
-  - Send and Async
-  - Shared State
-  - Async Basics
-  - Control Flow
-  - Pitfalls
-  - Assignment #6
-- Week 7 (TBA)
+- Week 6 (7/4) [[Lecture]](./1%20-%20Lecture/240626%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%206.pdf) [[Assignment]](./3%20-%20Assignment/240626%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%206/) [[Solution]](./4%20-%20Solution/240704%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%206/)
   - Closures
+    - Capturing Variables
+      - Closures that Borrow
+      - Closures that Steal
+    - Function and Closure Types
+    - Closure Performance
+    - Closures and Safety
+      - Closures that Kill
+      - `FnOnce`
+      - `FnMut`
+      - `Copy` and `Clone` for Closures
+    - Callbacks
+    - Using Closures Effectively
+  - Assignment #6
+- Week 7 (7/11) [[Lecture]](./1%20-%20Lecture/240711%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%207.pdf) [[Assignment]](./3%20-%20Assignment/240711%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%207/) [[Solution]](./4%20-%20Solution/240711%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%207/)
   - Macros
+    - Macro Basics
+      - Basics of Macro Expansion
+      - Unintended Consequences
+      - Repetition
+    - Built-in Macros
+    - Debugging Macros
+    - Building the `json!` Macro
+      - Fragment Types
+      - Recursion in Macros
+      - Using Traits with Macros
+      - Scoping and Hygiene
+      - Importing and Exporting Macros
+    - Avoiding Syntax Errors During Matching
+    - Beyond macro_rules!
   - Assignment #7
-- Week 8 (TBA)
+- Week 8 (7/19) [[Lecture]](./1%20-%20Lecture/240719%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%208.pdf) [[Example]](./2%20-%20Example/240719%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%208/) [[Assignment]](./3%20-%20Assignment/240719%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%208/)
+  - Concurrency, Part 1
+    - Fork-Join Parallelism
+      - `spawn` and `join`
+      - Error Handling Across Threads
+      - Sharing Immutable Data Across Threads
+      - `Rayon`
+    - Channels
+      - Sending Values
+      - Receiving Values
+      - Running the Pipeline
+      - Channel Features and Performance
+      - Thread Safety: `Send` and `Sync`
+      - Piping Almost Any Iterator to a Channel
+      - Beyond Pipelines
+  - Assignment #8
+- Week 9 (TBA)
+  - Concurrency, Part 2
+  - Assignment #9
+- Week 10 (TBA)
+  - Asynchronous Programming, Part 1
+  - Assignment #10
+- Week 11 (TBA)
+  - Asynchronous Programming, Part 2
+  - Assignment #11
+- Week 12 (TBA)
   - Foreign Function Interface (FFI)
   - Rust and WebAssembly
-  - Assignment #8
+  - Assignment #12
 
 ## References
 
