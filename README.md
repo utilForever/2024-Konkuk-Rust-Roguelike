@@ -188,7 +188,7 @@
       - Atomics
       - Global Variables
   - Assignment #9
-- Week 10 (8/8)
+- Week 10 (8/8) [[Lecture]](./1%20-%20Lecture/240808%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%2010.pdf)
   - Asynchronous Programming, Part 1
     - From Synchronous to Asynchronous
       - Futures
