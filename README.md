@@ -198,12 +198,20 @@
       - Async Blocks
       - Building Async Functions from Async Blocks
       - Spawning Async Tasks on a Thread Pool
+- Week 11 (8/15)
+  - Asynchronous Programming, Part 2
+    - From Synchronous to Asynchronous
       - But Does Your Future Implement `Send`?
       - Long Running Computations: `yield_now` and `spawn_blocking`
       - Comparing Asynchronous Designs
       - A Real Asynchronous HTTP Client
-- Week 11 (TBA)
-  - Asynchronous Programming, Part 2
+    - An Asynchronous Client and Server
+      - Error and Result Types
+      - The Protocol
+      - Talking User Input: Asynchronous Streams
+      - Sending Packets
+      - Receving Packets: More Asynchronous Streams
+      - The Client's Main Function
 - Week 12 (TBA)
   - Asynchronous Programming, Part 3
 - Week 13 (TBA)
