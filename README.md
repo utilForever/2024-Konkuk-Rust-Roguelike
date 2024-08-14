@@ -198,7 +198,7 @@
       - Async Blocks
       - Building Async Functions from Async Blocks
       - Spawning Async Tasks on a Thread Pool
-- Week 11 (8/15)
+- Week 11 (8/15) [[Lecture]](./1%20-%20Lecture/240815%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%2011.pdf)
   - Asynchronous Programming, Part 2
     - From Synchronous to Asynchronous
       - But Does Your Future Implement `Send`?
