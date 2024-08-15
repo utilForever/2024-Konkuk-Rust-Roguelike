@@ -157,7 +157,7 @@
     - Avoiding Syntax Errors During Matching
     - Beyond macro_rules!
   - Assignment #7
-- Week 8 (7/25) [[Lecture]](./1%20-%20Lecture/240725%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%208.pdf) [[Example]](./2%20-%20Example/240725%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%208/) [[Assignment]](./3%20-%20Assignment/240725%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%208/)
+- Week 8 (7/25) [[Lecture]](./1%20-%20Lecture/240725%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%208.pdf) [[Example]](./2%20-%20Example/240725%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%208/) [[Assignment]](./3%20-%20Assignment/240725%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%208/) [[Solution]](./4%20-%20Solution/240725%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%208/)
   - Concurrency, Part 1
     - Fork-Join Parallelism
       - `spawn` and `join`
@@ -173,19 +173,46 @@
       - Piping Almost Any Iterator to a Channel
       - Beyond Pipelines
   - Assignment #8
-- Week 9 (TBA)
+- Week 9 (8/2) [[Lecture]](./1%20-%20Lecture/240802%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%209.pdf) [[Assignment]](./3%20-%20Assignment/240802%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%209/) [[Solution]](./4%20-%20Solution/240802%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%209/)
   - Concurrency, Part 2
+    - Shared Mutable State
+      - What Is a Mutex?
+      - `Mutex<T>`
+      - `mut` and `Mutex`
+      - Why Mutexes Are Not Always a Good Idea
+      - Deadlock
+      - Poisoned Mutexes
+      - Multiconsumer Channels Using Mutexes
+      - Read/Write Locks (`RwLock<T>`)
+      - Condition Variables (`Condvar`)
+      - Atomics
+      - Global Variables
   - Assignment #9
-- Week 10 (TBA)
+- Week 10 (8/8) [[Lecture]](./1%20-%20Lecture/240808%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%2010.pdf)
   - Asynchronous Programming, Part 1
-  - Assignment #10
+    - From Synchronous to Asynchronous
+      - Futures
+      - Async Functions and Await Expressions
+      - Calling Async Functions from Synchronous Code: `block_on`
+      - Spawning Async Tasks
+      - Async Blocks
+      - Building Async Functions from Async Blocks
+      - Spawning Async Tasks on a Thread Pool
+      - But Does Your Future Implement `Send`?
+      - Long Running Computations: `yield_now` and `spawn_blocking`
+      - Comparing Asynchronous Designs
+      - A Real Asynchronous HTTP Client
 - Week 11 (TBA)
   - Asynchronous Programming, Part 2
-  - Assignment #11
 - Week 12 (TBA)
+  - Asynchronous Programming, Part 3
+- Week 13 (TBA)
+  - Asynchronous Programming, Part 4
+  - Assignment #10
+- Week 14 (TBA)
   - Foreign Function Interface (FFI)
   - Rust and WebAssembly
-  - Assignment #12
+  - Assignment #11
 
 ## References
 
