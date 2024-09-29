@@ -220,7 +220,7 @@
       - The Group Table: Synchronous Mutexes
       - Chat Groups: `tokio`'s Broadcast Channels
     - Primitive Futures and Executors: When Is a Future Worth Polling Again?
-- Week 13 (9/29) [[Lecture]](./1%20-%20Lecture/240929%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%2013.pdf)
+- Week 13 (9/29) [[Lecture]](./1%20-%20Lecture/240929%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%2013.pdf) [[Example]](./2%20-%20Example/240929%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%2013/)
   - Asynchronous Programming, Part 4
     - Primitive Futures and Executors: When Is a Future Worth Polling Again?
       - Invoking Wakers: `spawn_blocking`
