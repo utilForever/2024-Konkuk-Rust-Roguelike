@@ -220,8 +220,16 @@
       - The Group Table: Synchronous Mutexes
       - Chat Groups: `tokio`'s Broadcast Channels
     - Primitive Futures and Executors: When Is a Future Worth Polling Again?
-- Week 13 (TBA)
+- Week 13 (9/29) [[Lecture]](./1%20-%20Lecture/240929%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%2013.pdf)
   - Asynchronous Programming, Part 4
+    - Primitive Futures and Executors: When Is a Future Worth Polling Again?
+      - Invoking Wakers: `spawn_blocking`
+      - Implementing `block_on`
+    - Pinning
+      - The Two Life Stages of a Future
+      - Pinned Pointers
+      - The `Unpin` 
+    - When Is Asynchronous Code Helpful?
   - Assignment #10
 - Week 14 (TBA)
   - Foreign Function Interface (FFI)
