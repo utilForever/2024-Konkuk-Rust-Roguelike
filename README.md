@@ -2,6 +2,10 @@
 
 2024-Konkuk-Rust-Roguelike is the material(lecture notes, examples and assignments) repository for learning Rust programming language and making a simple console Roguelike game at Konkuk University Google Developer Student Clubs (GDSC) and Game Development Club 'EDGE' in 2024 Spring.
 
+## Updates
+
+- 2024-10-03: Added new contents for lecture "Closures" and renewed Assignment #6 and its solution.
+
 ## Contents
 
 - Week 0 (3/12) [[Lecture]](./1%20-%20Lecture/240312%20-%20Rust%20Basic%20+%20Roguelike%20Game,%20Week%200.pdf)
