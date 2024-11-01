@@ -5,6 +5,9 @@ use num::Complex;
 use std::env;
 use std::fs::File;
 use std::str::FromStr;
+use std::sync::Arc;
+use std::sync::Mutex;
+use std::thread;
 
 /// Try to determine if `c` is in the Mandelbrot set,
 /// using at most `limit` iterations to decide.
@@ -15,7 +18,18 @@ use std::str::FromStr;
 /// if we reached the iteration limit without being able to prove that
 /// `c` is not a member), return `None`.
 fn escape_time(_c: Complex<f64>, _limit: usize) -> Option<usize> {
-    todo!()
+    let mut x_i = 0.0;
+    let mut y_i = 0.0;
+
+    for i in 0.._limit {
+        if (x_i * x_i + y_i * y_i) > 4.0 {
+            return Some(i);
+        }
+        let x_temp = x_i * x_i - y_i * y_i + _c.re;
+        y_i = 2.0 * x_i * y_i + _c.im;
+        x_i = x_temp;
+    }
+    return None;
 }
 
 /// Parse the string `s` as a coordinate pair, like `"400x600"` or `"1.0,0.5"`.
@@ -27,12 +41,37 @@ fn escape_time(_c: Complex<f64>, _limit: usize) -> Option<usize> {
 /// If `s` has the proper form, return `Some<(x, y)>`.
 /// If it doesn't parse correctly, return `None`.
 fn parse_pair<T: FromStr>(_s: &str, _separator: char) -> Option<(T, T)> {
-    todo!()
+    // validate the input string
+    let pairs: Option<(T, T)> = split_input_pair(_s, _separator);
+    if pairs.is_none() {
+        return None;
+    }
+    return pairs;
 }
 
 /// Parse a pair of floating-point numbers separated by a comma as a complex number.
 fn parse_complex(_s: &str) -> Option<Complex<f64>> {
-    todo!()
+    let parts: Option<(f64, f64)> = split_input_pair(_s, ',');
+    if parts.is_none() {
+        return None;
+    }
+    return Some(Complex {
+        re: parts.unwrap().0,
+        im: parts.unwrap().1,
+    });
+}
+
+fn split_input_pair<T: FromStr>(s: &str, seperator: char) -> Option<(T, T)> {
+    //split str with seperator
+    let parts: Vec<&str> = s.split(seperator).collect();
+    if parts.len() != 2 {
+        return None;
+    }
+    let parsed_parts: Option<(T, T)> = match (T::from_str(parts[0]), T::from_str(parts[1])) {
+        (Ok(left), Ok(right)) => Some((left, right)),
+        _ => None,
+    };
+    return parsed_parts;
 }
 
 /// Given the row and column of a pixel in the output image,
@@ -48,7 +87,16 @@ fn pixel_to_point(
     _upper_left: Complex<f64>,
     _lower_right: Complex<f64>,
 ) -> Complex<f64> {
-    todo!()
+    // upper_left >> bound 0, 0
+    // lower_right >> bounds n-1 n-1
+    let width = (_lower_right.re - _upper_left.re).abs();
+    let height = (_upper_left.im - _lower_right.im).abs();
+
+    // 으으으으으으
+    Complex {
+        re: _upper_left.re + (width / _bounds.0 as f64) * _pixel.1 as f64,
+        im: _upper_left.im - (height / _bounds.1 as f64) * _pixel.0 as f64,
+    }
 }
 
 /// Render a rectangle of the Mandelbrot set into a buffer of pixels.
@@ -63,13 +111,30 @@ fn render(
     _upper_left: Complex<f64>,
     _lower_right: Complex<f64>,
 ) {
-    todo!()
+    for i in 0.._bounds.1 {
+        for j in 0.._bounds.0 {
+            let point = pixel_to_point(_bounds, (i, j), _upper_left, _lower_right);
+            _pixels[i * _bounds.0 + j] = match escape_time(point, 255) {
+                None => 0,
+                Some(count) => 255 - count as u8,
+            };
+        }
+    }
 }
 
 /// Write the buffer `pixels`, whose dimensions are given by `bounds`,
 /// to the file named `filename`.
 fn write_image(_filename: &str, _pixels: &[u8], _bounds: (usize, usize)) {
-    todo!()
+    let image_file = File::create(_filename).expect("Error creating image file");
+    let encoder = PngEncoder::new(image_file);
+    encoder
+        .write_image(
+            _pixels,
+            _bounds.0 as u32,
+            _bounds.1 as u32,
+            ExtendedColorType::L8,
+        )
+        .expect("Error writing image file");
 }
 
 fn main() {
@@ -91,11 +156,32 @@ fn main() {
 
     let mut pixels = vec![0; bounds.0 * bounds.1];
 
-    // Scope of slicing up `pixels` into horizontal bands.
     {
-        // TODO: You have to use multiple threads to calculate the Mandelbrot set faster.
-        //       You should change code to use `spawn()` and `join()`.
-    }
+        let mut thread_handles = vec![];
+        // split 
+        // 원본 벡터의 mutable ref. 그냥 스레드에 전달하면 오류났음.
+        let pixels_for_child = pixels.chunks_mut(bounds.0).enumerate().collect::<Vec<_>>();
 
+        for (i, chunk) in pixels_for_child.into_iter() {
+            let mut chunk_clone = chunk.to_vec().clone(); // clone and move
+            thread_handles.push(std::thread::spawn(move || {
+                render(
+                    &mut chunk_clone,
+                    (bounds.0, 1),        
+                    pixel_to_point(bounds, (i, 0), upper_left, lower_right),                                   //dimension
+                    pixel_to_point(bounds, (i, bounds.0), upper_left, lower_right),
+                );
+                chunk_clone
+            }));
+        }
+
+        // join threads, and copy the result to the original pixels
+        for (i, handle) in thread_handles.into_iter().enumerate() {
+            let res = handle.join().expect("Error joining thread");
+            let start = i * bounds.0;
+            let end = start + bounds.0;
+            pixels[start..end].copy_from_slice(&res);
+        }
+    }
     write_image(&args[1], &pixels, bounds);
 }
