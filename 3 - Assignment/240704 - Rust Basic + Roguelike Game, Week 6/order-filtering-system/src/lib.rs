@@ -1,4 +1,25 @@
-// TODO: Implement struct 'Order', type 'OrderFilter' and function 'filter_orders' as described in the description.
+struct Order {
+    id: u8,
+    customer: String,
+    price: f32,
+}
+
+type OrderFilter = Box<dyn Fn(&Order) -> bool>;
+
+fn filter_orders(orders: Vec<Order>, filters: Vec<OrderFilter>) -> Vec<Order> {
+    orders
+        .into_iter()
+        .filter(|order| {
+            for filter in &filters {
+                if !filter(order) {
+                    return false;
+                }
+            }
+
+            true
+        })
+        .collect()
+}
 
 #[cfg(test)]
 mod tests {

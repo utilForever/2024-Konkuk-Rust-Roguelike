@@ -1,4 +1,19 @@
-// TODO: Implement a function "check_cache" that takes a closure and returns a new closure.
+fn check_cache(mut c: impl FnMut(i32) -> i32) -> impl FnMut(i32) -> (i32, bool) {
+    let mut has_cache = false;
+    let mut cached_in: i32 = 0;
+    let mut cached_out: i32 = 0;
+
+    move |x| {
+        if has_cache && cached_in == x {
+            (cached_out, true)
+        } else {
+            has_cache = true;
+            cached_in = x;
+            cached_out = c(x);
+            (cached_out, false)
+        }
+    }
+}
 
 #[cfg(test)]
 mod tests {
