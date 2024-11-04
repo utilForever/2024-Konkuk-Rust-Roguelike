@@ -3,7 +3,13 @@ use std::collections::HashMap;
 #[macro_export]
 macro_rules! hashmap {
     () => {
-        unimplemented!()
+        ::std::collections::HashMap::new()
+    };
+    ($($k:literal => $v:expr), *) => {
+        ::std::collections::HashMap::from([ $( ( $k, $v ) ), *])
+    };
+    ($($k:literal => $v:expr), + ,) => {
+        hashmap!( $( $k => $v ), *)
     };
 }
 
